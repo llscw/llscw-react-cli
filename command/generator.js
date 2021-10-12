@@ -9,9 +9,9 @@ const { writeFileTree, resolveJson } = require('../lib/utils');
 // 目标文件夹根路径
 let targetRootPath = process.cwd();
 
-function deleteFolderRecursive (path) {
+function deleteFolderRecursive(path) {
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index){
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + "/" + file;
       if (fs.lstatSync(curPath).isDirectory()) {
         // recurse
@@ -24,7 +24,7 @@ function deleteFolderRecursive (path) {
   }
 };
 
-async function downLoadTemplate(repository, projectName, clone) {
+async function downLoadTemplate(repository, projectName, clone, spinner) {
   await new Promise((resolve, reject) => {
     download(
       repository,
@@ -33,7 +33,10 @@ async function downLoadTemplate(repository, projectName, clone) {
         clone
       },
       (err) => {
-        if (err) return reject(err);
+        if (err) {
+          spinner.fail()
+          return reject(err)
+        }
         resolve();
       }
     );
@@ -41,10 +44,10 @@ async function downLoadTemplate(repository, projectName, clone) {
 }
 
 
-function copyTemplates(name, config){
-  async function readAndCopyFile(parentPath, tempPath){
+function copyTemplates(name, config) {
+  async function readAndCopyFile(parentPath, tempPath) {
     const spinner = ora('🗃 开始下载模版...').start();
-    await downLoadTemplate(`github:lqt0327/myblog2.0#master`, name, true);
+    await downLoadTemplate(`github:lqt0327/react-template#main`, name, true, spinner);
     spinner.succeed('🎉 模版下载完成');
     console.log();
     console.info('🚀 初始化文件配置信息...');
@@ -100,33 +103,33 @@ async function getTemplateName() {
   ]);
 }
 
-async function generate(name){
+async function generate(name) {
   const config = await getTemplateName();
   const targetDir = path.join(targetRootPath, name);
 
-  if(fs.existsSync(targetDir)){
+  if (fs.existsSync(targetDir)) {
 
     // 如果已存在改模块，提问开发者是否覆盖该模块
     inquirer.prompt([
       {
-        name:'template-overwrite',
-        type:'confirm',
-        message:`模板 ${name} 已经存在, 是否确认覆盖?`,
-        validate: function(input){
-          if(input.lowerCase !== 'y' && input.lowerCase !== 'n' ){
+        name: 'template-overwrite',
+        type: 'confirm',
+        message: `模板 ${name} 已经存在, 是否确认覆盖?`,
+        validate: function (input) {
+          if (input.lowerCase !== 'y' && input.lowerCase !== 'n') {
             return 'Please input y/n !'
           }
-          else{
+          else {
             return true;
           }
         }
       }
     ])
-      .then(answers=>{
-        console.log('answers',answers);
+      .then(answers => {
+        console.log('answers', answers);
 
         // 如果确定覆盖
-        if(answers['template-overwrite']){
+        if (answers['template-overwrite']) {
           // 删除文件夹
           deleteFolderRecursive(targetDir);
           console.log(chalk.yellow(`template already existed , removing!`));
@@ -137,11 +140,11 @@ async function generate(name){
           console.log(chalk.green(`生成模板 "${name}" 完成!`));
         }
       })
-      .catch(err=>{
+      .catch(err => {
         console.log(chalk.red(err));
       })
   }
-  else{
+  else {
     //创建新模块文件夹
     fs.mkdirSync(targetDir);
     copyTemplates(name, config);

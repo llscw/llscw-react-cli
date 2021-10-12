@@ -1,6 +1,6 @@
 {
   "name": "-llscw-react-cli",
-  "version": "1.0.0",
+  "version": "1.0.1-beta3",
   "description": "llscw cli",
   "private": false,
   "main": "index.js",

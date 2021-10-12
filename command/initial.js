@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const figlet = require('figlet');
 const inquirer = require('inquirer');
 
-function copyCocoConfigJS(){
+function copyLlscwConfigJS(){
   figlet('llscw cli', function(err, data) {
     if(err){
       console.log(chalk.red('Some thing about figlet is wrong!'));
@@ -40,7 +40,7 @@ module.exports = function(){
     ])
       .then(answers=>{
         if(answers['init-confirm']){
-          copyCocoConfigJS();
+          copyLlscwConfigJS();
         }
         else{
           process.exit(0);
@@ -51,7 +51,7 @@ module.exports = function(){
       })
   }
   else{
-    copyCocoConfigJS();
+    copyLlscwConfigJS();
   }
 };
 

@@ -4,6 +4,8 @@ const fs = require('fs');
 const program = require('commander');
 const initial = require('../command/initial');
 const generate = require('../command/generator');
+const release = require('../command/release');
+const rollback = require('../command/rollback');
 
 const pkg = require('../package.json')
 
@@ -24,6 +26,20 @@ program
   .description('生成 llscw 模板')
   .action(function(template){
     generate(template);
+  });
+
+program
+  .command('release')
+  .description('发布模板')
+  .action(function(){
+    release();
+  });
+
+program
+  .command('rollback')
+  .description('回滚模版')
+  .action(function(){
+    rollback();
   });
 
 program.parse(process.argv);
