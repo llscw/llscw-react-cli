@@ -24,7 +24,9 @@ program
 program
   .command('create [template]')
   .description('生成 llscw 模板')
-  .action(function(template){
+  .option('-d, --debug', 'output extra debugging')
+  .option('-c, --cur', 'clone in current dir')
+  .action(function(template, cmd){
     generate(template);
   });
 

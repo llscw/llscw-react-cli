@@ -1,78 +1,65 @@
 const path = require('path');
 const fs = require('fs');
-const fse = require('fs-extra')
 const chalk = require('chalk');
 const inquirer = require('inquirer');
+const download = require('download-git-repo');
 const ora = require('ora');
 const genConfig = require('../tpl/getConfig');
-const { writeFileTree, resolveJson, travel, deleteFolderRecursive } = require('../lib/utils');
-// 目标文件夹 根路径
+const { writeFileTree, resolveJson } = require('../lib/utils');
+const { program } = require('commander');
+// 目标文件夹根路径
 let targetRootPath = process.cwd();
-// 脚手架模版文件 路径
-let template_path = path.join(__dirname, 'template')
 
-async function downLoadTemplate(projectName, spinner) {
-
-  let obj = {}
-
-  function setFile(data) {
-    for(let key in data) {
-      let dir = './' + projectName + path.dirname(key)
-      fse.mkdir(dir, {recursive: true}, (err)=>{
-        if(err) {
-          spinner.fail()
-          return console.error(err)
-        }
-        fs.writeFileSync('./' + projectName + key, data[key], 'utf-8')
-      })
-    }
-  }
-
-  await travel(template_path, 'template', function (key, pathname){
-    let doc = fs.readFileSync(pathname, 'utf-8')
-    Object.assign(obj, {
-      [key]: doc
-    })
-  })
-
-
-  if(!!projectName) {
-    await fse.ensureDirSync('./' + projectName, (err)=>{
-      if(err) {
-        spinner.fail()
-        return console.error(err)
+function deleteFolderRecursive(path) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function (file, index) {
+      var curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
       }
-    })
-    setFile(obj)
-  }else {
-    setFile(obj)
+    });
+    fs.rmdirSync(path);
   }
+};
+
+async function downLoadTemplate(repository, projectName, clone, spinner) {
+  await new Promise((resolve, reject) => {
+    download(
+      repository,
+      projectName,
+      {
+        clone
+      },
+      (err) => {
+        if (err) {
+          spinner.fail()
+          return reject(err)
+        }
+        resolve();
+      }
+    );
+  });
 }
 
-/**
- * 下载项目到本地
- * @param {string} name - 项目名称
- * @param {Object} config - 用户输入的项目基础信息
- */
+
 function copyTemplates(name, config) {
   async function readAndCopyFile(parentPath, tempPath) {
     const spinner = ora('🗃 开始下载模版...').start();
-    await downLoadTemplate(name, spinner);
+    await downLoadTemplate(`github:lqt0327/react-template#main`, name, true, spinner);
     spinner.succeed('🎉 模版下载完成');
     console.log();
     console.info('🚀 初始化文件配置信息...');
     console.log();
     console.log(parentPath);
 
-    name = name || 'llscw-demo'
-
     const pkg = {
       name,
       version: '0.1.0',
       private: true,
     }
-    
-    console.log(pkg,'??????',resolveJson(parentPath))
 
     await writeFileTree(parentPath, {
       'package.json': JSON.stringify(
@@ -85,10 +72,9 @@ function copyTemplates(name, config) {
       )
     });
 
-
     await writeFileTree(parentPath, {
       'llscw.config.js': genConfig({
-        name: name,
+        name: this.name,
         templateName: config.templateName,
         author: config.author,
       })
@@ -107,13 +93,13 @@ async function getTemplateName() {
       name: 'author',
       type: 'input',
       message: '作者',
-      default: 'llscw'
+      default: ''
     },
     {
       name: 'templateName',
       type: 'input',
-      message: '你还需要给你的模版起个名字',
-      default: 'llscw-demo'
+      message: '你还需要给你的模版起个中文名',
+      default: ''
     }
   ]);
 }
@@ -122,7 +108,7 @@ async function generate(name) {
   const config = await getTemplateName();
   // 不创建目录，直接复制到当前目录下
   if(!!name == false) {
-    copyTemplates('', config);
+    copyTemplates('./', config);
     return ;
   }
 
