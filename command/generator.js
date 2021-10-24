@@ -5,7 +5,8 @@ const chalk = require('chalk');
 const inquirer = require('inquirer');
 const ora = require('ora');
 const genConfig = require('../tpl/getConfig');
-const { writeFileTree, resolveJson, travel, deleteFolderRecursive } = require('../lib/utils');
+const { writeFileTree, resolveJson, travel, deleteFolderRecursive, Shell } = require('../lib/utils');
+
 // 目标文件夹 根路径
 let targetRootPath = process.cwd();
 // 脚手架模版文件 路径
@@ -15,16 +16,11 @@ async function downLoadTemplate(projectName, spinner) {
 
   let obj = {}
 
-  function setFile(data) {
+  async function setFile(data) {
     for(let key in data) {
       let dir = './' + projectName + path.dirname(key)
-      fse.mkdir(dir, {recursive: true}, (err)=>{
-        if(err) {
-          spinner.fail()
-          return console.error(err)
-        }
-        fs.writeFileSync('./' + projectName + key, data[key], 'utf-8')
-      })
+      fs.mkdirSync(dir, {recursive: true})
+      fs.writeFileSync('./' + projectName + key, data[key], 'utf-8')
     }
   }
 
@@ -35,18 +31,15 @@ async function downLoadTemplate(projectName, spinner) {
     })
   })
 
-
   if(!!projectName) {
-    await fse.ensureDirSync('./' + projectName, (err)=>{
+    fse.ensureDirSync('./' + projectName, (err)=>{
       if(err) {
         spinner.fail()
         return console.error(err)
       }
     })
-    setFile(obj)
-  }else {
-    setFile(obj)
   }
+  await setFile(obj)
 }
 
 /**
@@ -55,9 +48,17 @@ async function downLoadTemplate(projectName, spinner) {
  * @param {Object} config - 用户输入的项目基础信息
  */
 function copyTemplates(name, config) {
+  
   async function readAndCopyFile(parentPath, tempPath) {
+    // 获取git仓库地址
+    const sh = new Shell()
+    let gitUrl = ""
+    await sh.exec('git remote -v').then(res=> {
+      gitUrl = 'https://github.com/' + res.split(':')[1].split('.git')[0] + '.git'
+    })
+
     const spinner = ora('🗃 开始下载模版...').start();
-    await downLoadTemplate(name, spinner);
+    await downLoadTemplate(name, spinner)
     spinner.succeed('🎉 模版下载完成');
     console.log();
     console.info('🚀 初始化文件配置信息...');
@@ -71,8 +72,6 @@ function copyTemplates(name, config) {
       version: '0.1.0',
       private: true,
     }
-    
-    console.log(pkg,'??????',resolveJson(parentPath))
 
     await writeFileTree(parentPath, {
       'package.json': JSON.stringify(
@@ -85,12 +84,12 @@ function copyTemplates(name, config) {
       )
     });
 
-
     await writeFileTree(parentPath, {
       'llscw.config.js': genConfig({
         name: name,
         templateName: config.templateName,
         author: config.author,
+        repoUrl: gitUrl || ""
       })
     });
     console.log();
@@ -112,8 +111,8 @@ async function getTemplateName() {
     {
       name: 'templateName',
       type: 'input',
-      message: '你还需要给你的模版起个名字',
-      default: 'llscw-demo'
+      message: '你还需要给你的模版起个中文名字',
+      default: '模版demo'
     }
   ]);
 }
