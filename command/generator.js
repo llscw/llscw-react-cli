@@ -55,6 +55,8 @@ function copyTemplates(name, config) {
     let gitUrl = ""
     await sh.exec('git remote -v').then(res=> {
       gitUrl = 'https://github.com/' + res.split(':')[1].split('.git')[0] + '.git'
+    }).catch(err=>{
+      console.log(chalk.yellow(err.message))
     })
 
     const spinner = ora('🗃 开始下载模版...').start();
