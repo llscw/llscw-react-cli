@@ -31,14 +31,7 @@ async function downLoadTemplate(projectName, spinner) {
     })
   })
 
-  if(!!projectName) {
-    fse.ensureDirSync('./' + projectName, (err)=>{
-      if(err) {
-        spinner.fail()
-        return console.error(err)
-      }
-    })
-  }
+  fse.ensureDirSync('./' + projectName)
   await setFile(obj)
 }
 

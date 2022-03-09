@@ -8,24 +8,6 @@ const { travel } = require('../lib/utils')
 async function release() {
     const obj = {}
 
-    // function travel(dir, callback) {
-    //     fs.readdirSync(dir).forEach((file) => {
-    //         var pathname = path.join(dir, file)
-    //         if (fs.statSync(pathname).isDirectory()) {
-    //             travel(pathname, callback)
-    //         } else if (fs.statSync(pathname).isFile()) {
-    //             let doc;
-    //             if (dir.includes('/img')) {
-    //                 doc = fs.readFileSync(pathname, 'binary')
-    //             } else {
-    //                 doc = fs.readFileSync(pathname, 'utf-8')
-    //             }
-    //             callback(pathname.split('build')[1], doc)
-    //         }
-    //     })
-    // }
-
-
     await travel('./build', 'build', function (key, pathname, dir) {
         let doc;
         if (dir.includes('/img')) {

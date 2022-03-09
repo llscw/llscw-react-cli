@@ -11,7 +11,7 @@ const Params = {
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
     },
-    entry: ["@babel/polyfill", "./index.tsx"],
+    entry: ["./index.tsx"],
     output: {
         path: path.join(__dirname, "dist"),
         filename: "bundle.js",
