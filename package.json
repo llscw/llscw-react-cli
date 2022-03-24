@@ -5,7 +5,8 @@
   "private": false,
   "main": "index.js",
   "bin": {
-    "llscw": "./bin/index.js"
+    "llscw": "./bin/index.js",
+    "ll": "./bin/start.js"
   },
   "files": [
     "bin",
@@ -14,7 +15,8 @@
     "tpl"
   ],
   "scripts": {
-    "llscw": "llscw"
+    "llscw": "llscw",
+    "ll": "ll"
   },
   "repository": {
     "type": "git",
@@ -38,5 +40,12 @@
     "ora": "^5.3.0",
     "read-pkg": "^5.2.0",
     "shelljs": "^0.8.5"
+  },
+  "devDependencies": {
+    "express": "^4.17.3",
+    "webpack": "^5.51.2",
+    "webpack-dev-middleware": "^5.3.1",
+    "webpack-hot-middleware": "^2.25.1",
+    "webpack-sources": "^3.2.3"
   }
 }

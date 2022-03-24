@@ -6,6 +6,7 @@ const initial = require('../command/initial');
 const generate = require('../command/generator');
 const release = require('../command/release');
 const rollback = require('../command/rollback');
+const startProject = require('../command/start-project');
 
 const pkg = require('../package.json')
 
@@ -42,6 +43,15 @@ program
   .description('回滚模版')
   .action(function(){
     rollback();
+  });
+
+program
+  .command('run [env]')
+  .description('启动 llscw 脚手架')
+  .option('-d, --debug', 'output extra debugging')
+  .option('-c, --cur', 'clone in current dir')
+  .action(function(env, cmd){
+    startProject(env);
   });
 
 program.parse(process.argv);
