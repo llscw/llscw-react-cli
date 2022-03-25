@@ -1,10 +1,10 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
-// const devMode = process.env.NODE_ENV !== "production";
-const devMode = process.env.npm_lifecycle_event !== "prod";
 const { merge } = require('webpack-merge')
 const dev = require('./dev')
 const prod = require('./prod')
+const targetRootPath = process.cwd();
+
 // const ESLintPlugin = require('eslint-webpack-plugin');
 /**
  * mini-css-extract-plugin 为link引入css
@@ -18,8 +18,10 @@ const prod = require('./prod')
  * https://webpack.docschina.org/plugins/mini-css-extract-plugin/
  */
 
+const devMode = process.argv.some(i=>i==='dev')
+
 module.exports = merge(devMode ? dev : prod, {
-    context: path.resolve(__dirname, "../src"),
+    context: path.resolve(targetRootPath, "src"),
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
     },

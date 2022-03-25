@@ -46,7 +46,7 @@ class ClearConsole {
             outputContent = outputContent.replace(re, s);
           })
           compilation.assets[filename] = new RawSource(outputContent)
-          fs.writeFileSync('./test.js', compilation.assets[filename].source(), 'utf-8')
+          // fs.writeFileSync('./test.js', compilation.assets[filename].source(), 'utf-8')
         }
       })
     }

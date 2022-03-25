@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const path = require('path')
 const ClearConsole = require('./plugins/clear_console')
+const targetRootPath = process.cwd();
 
 module.exports = {
   mode: 'development',
@@ -12,7 +13,7 @@ module.exports = {
   },
   devtool: "source-map",
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(targetRootPath, 'dist'),
     publicPath: '/', // 服务器脚本会用到
     filename: 'index.js'
   },
@@ -31,7 +32,7 @@ module.exports = {
         include: /src/,
         exclude: /node_modules/,
         use: {
-            loader: path.resolve(__dirname,'../config/loader/index.js')
+            loader: path.resolve(__dirname,'loader/index.js')
         }
       }
     ],
