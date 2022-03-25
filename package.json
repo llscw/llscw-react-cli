@@ -1,12 +1,11 @@
 {
   "name": "-llscw-react-cli",
-  "version": "1.0.1-beta3",
+  "version": "1.0.1-beta4",
   "description": "llscw cli",
   "private": false,
   "main": "index.js",
   "bin": {
-    "llscw": "./bin/index.js",
-    "ll": "./bin/start.js"
+    "llscw": "./bin/index.js"
   },
   "files": [
     "bin",
@@ -15,8 +14,7 @@
     "tpl"
   ],
   "scripts": {
-    "llscw": "llscw",
-    "ll": "ll"
+    "llscw": "llscw"
   },
   "repository": {
     "type": "git",
