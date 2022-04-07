@@ -1,9 +1,18 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const { merge } = require('webpack-merge')
-const dev = require('./dev')
-const prod = require('./prod')
+const dev = require('./webpack.dev')
 const targetRootPath = process.cwd();
+const customWebpackPath = path.resolve(targetRootPath, 'llscw.config.js')
+const customWebpackConfig = require(customWebpackPath)({})
+const llscwScaffold = require(customWebpackPath).llscwScaffold
+
+const {
+    bundleAnalyzerOptions,
+    webpackConfig
+} = customWebpackConfig
+
+const prod = require('./webpack.prod')({bundleAnalyzerOptions})
 
 // const ESLintPlugin = require('eslint-webpack-plugin');
 /**
@@ -59,4 +68,4 @@ module.exports = merge(devMode ? dev : prod, {
         //     exclude: 'node_modules'
         // }),
     ]
-})
+}, webpackConfig)

@@ -3,7 +3,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const path = require('path')
 const targetRootPath = process.cwd();
 
-module.exports = {
+module.exports = ({bundleAnalyzerOptions}) => ({
   mode: 'production',
   entry: ["./index.tsx"],
   output: {
@@ -29,6 +29,10 @@ module.exports = {
       filename: "[name].css",
       chunkFilename: "[id].css",
     }),
-    new BundleAnalyzerPlugin()
-  ],
-}
+    new BundleAnalyzerPlugin(
+      Object.assign({
+        analyzerMode: 'disabled'
+      }, bundleAnalyzerOptions)
+    )
+  ]
+})

@@ -8,7 +8,8 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const targetRootPath = process.cwd();
 const app = express();
-const config = require(path.join(targetRootPath, 'webpack.config.js')); // 引入配置文件
+// const config = require(path.join(targetRootPath, 'webpack.config.js')); // 引入配置文件
+const config = require(path.join(targetRootPath, 'webpack.common.js')); // 引入配置文件
 const compiler = webpack(config); // 初始化编译器
 
 // 使用webpack-dev-middleware中间件

@@ -80,7 +80,7 @@ function copyTemplates(name, config) {
     });
 
     await writeFileTree(parentPath, {
-      'llscw.config.js': genConfig({
+      'manifest.js': genConfig({
         name: name,
         templateName: config.templateName,
         author: config.author,
