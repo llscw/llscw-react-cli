@@ -9,10 +9,12 @@ const { writeFileTree, resolveJson, travel, deleteFolderRecursive, Shell } = req
 
 // 目标文件夹 根路径
 let targetRootPath = process.cwd();
-// 脚手架模版文件 路径
-let template_path = path.join(__dirname, 'template')
 
-async function downLoadTemplate(projectName, spinner) {
+
+async function downLoadTemplate(projectName, templateName, spinner) {
+
+  // 脚手架模版文件 路径
+  let template_path = path.join(__dirname, templateName)
 
   let obj = {}
 
@@ -24,7 +26,7 @@ async function downLoadTemplate(projectName, spinner) {
     }
   }
 
-  await travel(template_path, 'template', function (key, pathname){
+  await travel(template_path, templateName, function (key, pathname){
     let doc = fs.readFileSync(pathname, 'utf-8')
     Object.assign(obj, {
       [key]: doc
@@ -53,7 +55,9 @@ function copyTemplates(name, config) {
     })
 
     const spinner = ora('🗃 开始下载模版...').start();
-    await downLoadTemplate(name, spinner)
+    const templateName = config.templateType
+    console.log(templateName,'测试数据111111')
+    await downLoadTemplate(name, templateName, spinner)
     spinner.succeed('🎉 模版下载完成');
     console.log();
     console.info('🚀 初始化文件配置信息...');
@@ -82,7 +86,7 @@ function copyTemplates(name, config) {
     await writeFileTree(parentPath, {
       'manifest.js': genConfig({
         name: name,
-        templateName: config.templateName,
+        templateName: config.projectName,
         author: config.author,
         repoUrl: gitUrl || ""
       })
@@ -98,13 +102,33 @@ function copyTemplates(name, config) {
 async function getTemplateName() {
   return await inquirer.prompt([
     {
+      name: 'templateType',
+      type: 'list',
+      message: '当前目录尚未初始化，选择您初始化的工程类型： (Use arrow keys)',
+      choices: [
+        {
+          name: '页面(原生js)-react',
+          value: 'react-js',
+          checked: true
+        },
+        {
+          name: '页面(原生js)-react-router',
+          value: 'react-js-router',
+        },
+        {
+          name: '页面(typescript)-react',
+          value: 'react-ts',
+        }
+      ]
+    },
+    {
       name: 'author',
       type: 'input',
       message: '作者',
       default: 'llscw'
     },
     {
-      name: 'templateName',
+      name: 'projectName',
       type: 'input',
       message: '你还需要给你的模版起个中文名字',
       default: '模版demo'

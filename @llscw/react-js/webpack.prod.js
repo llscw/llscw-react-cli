@@ -25,7 +25,7 @@ const {
 } = customWebpackConfig
 
 const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "production" }), {
-  entry: ["./index.tsx"],
+  entry: ["./index.jsx"],
   output: {
     path: path.resolve(userFolder, "dist"),
     filename: "bundle.[chunkhash].js",
@@ -67,6 +67,31 @@ webpack(finalWebpackConfig, (err, stats) => {
     }
     process.exit(1);
     return;
+  }
+  const info = stats.toJson();
+  if (stats.hasErrors()) {
+    let hasBuildError = false;
+
+    // 只要有一个不是来自 uglify 的问题
+    for (let i = 0, len = info.errors.length; i < len; i++) {
+      if (!/from\s*UglifyJs/i.test(info.errors[i])) {
+        hasBuildError = true;
+        break;
+      }
+    }
+    if (hasBuildError) {
+      console.log(chalk.red("Compilication failed."));
+      // for (let i = 0, len = info.errors.length; i < len; i++) {
+      //     console.error(i, /UglifyJs/i.test(info.errors[i]));
+      // }
+
+      console.log(info.errors);
+      // console.error(info.errors.length);
+      process.exit(1);
+    }
+  }
+  if (stats.hasWarnings()) {
+    // console.warn(info.warnings);
   }
   console.log(chalk.green("Compilication done."));
 })

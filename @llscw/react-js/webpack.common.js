@@ -18,18 +18,19 @@ module.exports = ({userFolder, buildFolder, currentEnv, mode})=>({
     mode,
     context: path.join(userFolder, "src"),
     resolve: {
-        extensions: [".js", ".ts", ".tsx"],
+        extensions: [".js", ".jsx"],
     },
     
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: "awesome-typescript-loader",
+                loader: 'babel-loader',
                 options: {
-                    useBabel: true,
-                    babelCore: "@babel/core", // needed for Babel v7
+                  presets: [
+                    ['@babel/preset-react']
+                  ],
                 },
             },
             {

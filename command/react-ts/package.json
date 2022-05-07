@@ -33,7 +33,6 @@
     "@babel/preset-env": "^7.15.4",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
-    "llscw-react-mechanic": "0.0.3-beta3",
     "url-loader": "^4.1.1",
     "webpack": "^5.51.2",
     "webpack-cli": "^4.8.0"

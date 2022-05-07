@@ -21,7 +21,7 @@ const {
 const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "development" }), {
   entry: {
     index: [
-      "./index.tsx"
+      './index.tsx'
     ]
   },
   devtool: "source-map",

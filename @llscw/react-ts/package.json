@@ -1,8 +1,8 @@
 {
-  "name": "llscw-react-mechanic",
-  "version": "0.0.3-beta11",
+  "name": "llscw-react-ts",
+  "version": "0.0.1-beta3",
   "description": "react脚手架webpack配置",
-  "main": "./base.js",
+  "main": "index.js",
   "author": "luoqintai",
   "license": "ISC",
   "devDependencies": {},

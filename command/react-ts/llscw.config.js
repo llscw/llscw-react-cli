@@ -20,11 +20,11 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
     // },
 
     webpackConfig: {
-      output: {
-        path: path.resolve(__dirname, "build"),
-        filename: "bundle.[chunkhash].js",
-        publicPath: '/build', // 服务器脚本会用到
-      }
+      // output: {
+      //   path: path.resolve(__dirname, "build"),
+      //   filename: "bundle.[chunkhash].js",
+      //   publicPath: '/build', // 服务器脚本会用到
+      // }
     },
 
     https:{
@@ -32,3 +32,5 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
     }
   }
 }
+
+module.exports.llscwScaffold = 'llscw-react-ts@0.0.1-beta3'

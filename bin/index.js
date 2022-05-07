@@ -10,11 +10,12 @@ const startProject = require('../command/start-project');
 
 const pkg = require('../package.json')
 
-let config = {};
-// 配置文件如果存在则读取
-if(fs.existsSync(path.resolve('llscw.config.js'))){
-  config = require(path.resolve('llscw.config.js'));
-}
+// let config = {};
+// // 配置文件如果存在则读取
+// console.log(fs.existsSync(path.resolve('llscw.config.js')),'=====')
+// if(fs.existsSync(path.resolve('llscw.config.js'))){
+//   config = require(path.resolve('llscw.config.js'));
+// }
 
 program
   .version(pkg.version,'-v, --version')

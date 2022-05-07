@@ -21,7 +21,7 @@ const {
 const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "development" }), {
   entry: {
     index: [
-      "./index.tsx"
+      "./index.jsx"
     ]
   },
   devtool: "source-map",
@@ -41,12 +41,10 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, m
         use: ["style-loader", 'css-loader', 'less-loader']
       },
       {
-        test: /index.tsx$/,
+        test: /index.jsx$/,
         include: /src/,
         exclude: /node_modules/,
-        use: {
-            loader: path.resolve(__dirname,'loader/demo.js')
-        }
+        loader: path.resolve(__dirname,'loader/index.js')
       }
     ],
   },
