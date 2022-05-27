@@ -1,13 +1,12 @@
 const path = require('path');
 const fs = require('fs')
-const { Shell, getNpmName, formatArgs } = require('../lib/utils');
+const { Shell, getNpmPackageMessage, formatArgs } = require('../lib/utils');
 const { execSync } = require('child_process')
 
 // node获取用户home目录 获取 桌面路径
 const USER_HOME = process.env.HOME || process.env.USERPROFILE
 const fse = require('fs-extra')
-const chalk = require('chalk');
-chalk.level = 2
+const logUtil = require('../lib/util-log')
 
 const sh = new Shell()
 
@@ -20,7 +19,7 @@ function init() {
   const customWebpackPath = path.resolve(targetRootPath, 'llscw.config.js')
   const llscwScaffold = require(customWebpackPath).llscwScaffold
   
-  let llscwScaffoldName = getNpmName(llscwScaffold)
+  let llscwScaffoldName = getNpmPackageMessage(llscwScaffold).name
   
   // 本地调试 热更新
   const start_path = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/server.js`)
@@ -36,26 +35,38 @@ function init() {
   }
 }
 
-function startProject(env) {
+async function startProject(env) {
   const {
     start_path,
     build_path,
     llscwScaffold
   } = init()
 
-  scaffoldInit(llscwScaffold)
+  await scaffoldInit(llscwScaffold)
   if(env === 'dev') {
-    sh.exec(`node ${start_path} currentEnv=${env} userFolder=${targetRootPath}`)
+    sh.exec(`node ${start_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
   }else {
-    sh.exec(`node ${build_path} userFolder=${targetRootPath}`)
+    sh.exec(`node ${build_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
   }
   
 }
 
-function scaffoldInit(name) {
-  console.log(chalk.yellow('开始检测脚手架...'))
-  // execSync(`npm i ${name} -D`)
-  console.log(chalk.yellow('检测完成...'))
+async function scaffoldInit(name) {
+  logUtil.warn('开始检测脚手架...')
+  if(fs.existsSync(path.join(targetRootPath,'package.json'))) {
+    const config = JSON.parse(fs.readFileSync(path.join(targetRootPath,'package.json'), 'utf-8'))
+    const {name: llscwScaffoldName, version: llscwScaffoldVersion} = getNpmPackageMessage(name)
+    if(!(config.devDependencies[llscwScaffoldName] || config.dependencies[llscwScaffoldName])) {
+      logUtil.warn(`安装脚手架[${name}]...`)
+      await sh.exec(`npm i ${name} -D`)
+    } else if (
+      (config.devDependencies[llscwScaffoldName] && (llscwScaffoldVersion !== config.devDependencies[llscwScaffoldName])) ||
+       config.dependencies[llscwScaffoldName] && (llscwScaffoldVersion !== config.dependencies[llscwScaffoldName])) {
+      logUtil.warn(`更新脚手架[${name}]...`)
+      await sh.exec(`npm i ${name} -D`)
+    }
+  }
+  logUtil.warn('检测完成...')
 }
 
 module.exports = startProject;

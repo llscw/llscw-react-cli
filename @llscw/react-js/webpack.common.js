@@ -28,13 +28,11 @@ module.exports = ({userFolder, buildFolder, currentEnv, mode})=>({
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 options: {
-                  presets: [
-                    ['@babel/preset-react']
-                  ],
+                    cacheDirectory: true,
                 },
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|jpe?g|gif|svg)$/,
                 loader: "file-loader",
                 options: {
                     name: "assets/img/[name].[ext]?[hash]",

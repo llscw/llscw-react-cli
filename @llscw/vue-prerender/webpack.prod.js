@@ -7,6 +7,8 @@ const { merge } = require('webpack-merge')
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
 
 const { formatArgs, travel } = require('./lib/utils')
 const finalConfig = formatArgs(process.argv)
@@ -22,15 +24,17 @@ const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder
 const {
   bundleAnalyzerOptions,
   webpackConfig,
+  replace,
 } = customWebpackConfig
 
-const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "production" }), {
-  entry: ["./index.jsx"],
+const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, replace, mode: "production" }), {
+  entry: ["./index.js"],
   output: {
     path: path.resolve(userFolder, "dist"),
-    filename: "bundle.[chunkhash].js",
-    publicPath: '/dist', // 服务器脚本会用到
+    filename: "bundle.js",
+    publicPath: '/', // 服务器脚本会用到
   },
+  devtool: '#source-map',
 
   module: {
     rules: [
@@ -38,22 +42,29 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, m
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
-      {
-        test: /.less$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
-      },
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css",
+      filename: "style.css"
     }),
     new BundleAnalyzerPlugin(
       Object.assign({
         analyzerMode: 'disabled'
       }, bundleAnalyzerOptions)
-    )
+    ),
+    new PrerenderSPAPlugin({
+      staticDir: path.join(userFolder, 'dist'),
+      routes: customWebpackConfig.replace["$$_ROUTERCONFIG_$$"][currentEnv],
+
+      renderer: new Renderer({
+        inject: {
+          foo: 'bar'
+        },
+        headless: true,
+        renderAfterDocumentEvent: 'render-event'
+      })
+    })
   ]
 }, webpackConfig)
 

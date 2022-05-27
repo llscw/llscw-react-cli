@@ -118,6 +118,10 @@ async function getTemplateName() {
         {
           name: '页面(typescript)-react',
           value: 'react-ts',
+        },
+        {
+          name: '页面(js)-vue',
+          value: 'vue-js',
         }
       ]
     },

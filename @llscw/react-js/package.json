@@ -1,6 +1,6 @@
 {
   "name": "llscw-react-js",
-  "version": "0.0.1-beta8",
+  "version": "0.0.1-beta12",
   "description": "react脚手架webpack配置",
   "main": "index.js",
   "author": "luoqintai",
@@ -10,6 +10,7 @@
     "@babel/core": "^7.15.4",
     "@babel/preset-react": "^7.16.7",
     "@babel/types": "^7.17.0",
+    "babel-loader": "^8.2.5",
     "chalk": "^4.1.2",
     "css-loader": "^6.2.0",
     "express": "^4.17.3",

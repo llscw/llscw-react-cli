@@ -15,6 +15,17 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
         }
     },
 
+    replace: {
+      "$$_ROUTERCONFIG_$$": {
+        "dev": ['/'],
+        "prod": ['/', '/about', '/contact']
+      },
+      "$$_currentEnv_$$": {
+        "dev": currentEnv,
+        "prod": currentEnv
+      },
+    },
+
     // bundleAnalyzerOptions: {
     //   analyzerMode: 'static'
     // },
@@ -33,4 +44,4 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
   }
 }
 
-module.exports.llscwScaffold = 'llscw-react-js@0.0.1-beta12'
+module.exports.llscwScaffold = 'llscw-vue-prerender@0.0.1'
