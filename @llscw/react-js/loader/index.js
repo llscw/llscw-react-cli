@@ -19,7 +19,8 @@ const path = require('path')
 const USER_HOME = process.env.HOME || process.env.USERPROFILE
 
 module.exports = function (code) {
-  const TARGET_PKG_NAME = path.resolve(USER_HOME, '.llscwScaffold/scaffold', 'node_modules/webpack-hot-middleware/client?hot=true&path=/__webpack_hmr&timeout=20000&reload=true')
+  // 注：路径错误，应该是 process.cwd() + node_modules/webpack-hot-middleware/client?hot=true&path=/__webpack_hmr&timeout=20000&reload=true
+  // const TARGET_PKG_NAME = path.resolve(USER_HOME, '.llscwScaffold/scaffold', 'node_modules/webpack-hot-middleware/client?hot=true&path=/__webpack_hmr&timeout=20000&reload=true')
   const isTrueRequire = node => {
     const { callee, arguments } = node;
     return callee.name === 'require' && arguments.some(item => item.value === TARGET_PKG_NAME);

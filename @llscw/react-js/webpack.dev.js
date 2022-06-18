@@ -20,15 +20,16 @@ const {
 
 const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "development" }), {
   entry: {
-    index: [
-      "./index.jsx"
-    ]
+    shared: ['webpack-hot-middleware/client?hot=true&path=/__webpack_hmr&timeout=10000&reload=true'],
+    home: {
+      import: './index.jsx',
+      dependOn: 'shared'
+    }
   },
   devtool: "source-map",
   output: {
     path: path.join(userFolder, 'dist'),
     publicPath: '/', // 服务器脚本会用到
-    filename: 'index.js'
   },
   module: {
     rules: [
@@ -40,12 +41,6 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, m
         test: /.less$/,
         use: ["style-loader", 'css-loader', 'less-loader']
       },
-      {
-        test: /index.jsx$/,
-        include: /src/,
-        exclude: /node_modules/,
-        loader: path.resolve(__dirname,'loader/index.js')
-      }
     ],
   },
   plugins: [
