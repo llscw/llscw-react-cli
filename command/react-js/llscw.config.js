@@ -33,4 +33,4 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
   }
 }
 
-module.exports.llscwScaffold = 'llscw-react-js@0.0.1-beta12'
+module.exports.llscwScaffold = 'llscw-react-js@0.0.1-beta20'
