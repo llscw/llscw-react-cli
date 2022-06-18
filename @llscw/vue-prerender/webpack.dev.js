@@ -19,12 +19,11 @@ const {
 } = customWebpackConfig
 
 const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, replace, mode: "development" }), {
-  entry: ["./index.js"],
+  entry: ['webpack-hot-middleware/client?hot=true&path=/__webpack_hmr&timeout=10000&reload=true', 'index.js'],
   devtool: "source-map",
   output: {
     path: path.join(userFolder, 'dist'),
     publicPath: '/', // 服务器脚本会用到
-    filename: 'index.js'
   },
   stats: {
     assets: false,
@@ -47,12 +46,6 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, r
   },
   module: {
     rules: [
-      {
-        test: /index.js$/,
-        include: /src/,
-        exclude: /node_modules/,
-        loader: path.resolve(__dirname,'loader/hot/index.js')
-      },
       {
         test: /\.css$/,
         use: [

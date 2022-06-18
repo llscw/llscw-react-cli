@@ -31,6 +31,25 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, m
     path: path.join(userFolder, 'dist'),
     publicPath: '/', // 服务器脚本会用到
   },
+  stats: {
+    assets: false,
+    colors: true,
+    errors: true,
+    children: false,
+    chunks: false,
+    chunkModules: false,
+    errorDetails: false,
+    warnings: false,
+    version: false,
+    moduleTrace: false,
+    modules: false,
+    hash: false,
+    timings: true,
+    reasons: false,
+    publicPath: false,
+    chunkOrigins: false,
+    depth: false
+  },
   module: {
     rules: [
       {

@@ -44,4 +44,4 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
   }
 }
 
-module.exports.llscwScaffold = 'llscw-vue-prerender@0.0.2-beta1'
+module.exports.llscwScaffold = 'llscw-vue-prerender@0.0.2-beta3'
