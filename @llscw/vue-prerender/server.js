@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const path = require('path')
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+const logUtil = require('./lib/util-log')
 
 const targetRootPath = process.cwd();
 const app = express();
@@ -25,5 +26,6 @@ app.use(webpackHotMiddleware(compiler, {
 
 // Serve the files on port 3000.
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!\n');
+  logUtil.scaffold('[0] http://h5.dev.luoqintai.cn:3000')
+  logUtil.scaffold('建议将 localhost 绑定到域名 h5.dev.luoqintai.cn, 防止接口请求时出现跨域问题\n')
 });

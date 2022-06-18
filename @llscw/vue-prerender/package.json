@@ -1,6 +1,6 @@
 {
   "name": "llscw-vue-prerender",
-  "version": "0.0.1",
+  "version": "0.0.2-beta1",
   "description": "vue脚手架webpack配置",
   "main": "index.js",
   "author": "luoqintai",

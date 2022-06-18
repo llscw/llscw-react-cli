@@ -26,6 +26,25 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, r
     publicPath: '/', // 服务器脚本会用到
     filename: 'index.js'
   },
+  stats: {
+    assets: false,
+    colors: true,
+    errors: true,
+    children: false,
+    chunks: false,
+    chunkModules: false,
+    errorDetails: false,
+    warnings: false,
+    version: false,
+    moduleTrace: false,
+    modules: false,
+    hash: false,
+    timings: true,
+    reasons: false,
+    publicPath: false,
+    chunkOrigins: false,
+    depth: false
+  },
   module: {
     rules: [
       {

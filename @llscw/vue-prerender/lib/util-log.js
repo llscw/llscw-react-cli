@@ -13,5 +13,8 @@ module.exports = {
   },
   pass(content) {
     console.log(chalk.green(content))
+  },
+  scaffold(content) {
+    console.log(chalk.greenBright('[llscw 脚手架] ') + content)
   }
 }

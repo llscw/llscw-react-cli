@@ -23,14 +23,10 @@ module.exports = ({userFolder, buildFolder, currentEnv, mode})=>({
     
     module: {
         rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
-                loader: "awesome-typescript-loader",
-                options: {
-                    useBabel: true,
-                    babelCore: "@babel/core", // needed for Babel v7
-                },
+            { 
+                test: /\.tsx?$/, 
+                include: path.resolve(userFolder, 'src'),
+                loader: "ts-loader" 
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
