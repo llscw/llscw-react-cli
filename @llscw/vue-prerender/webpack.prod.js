@@ -34,8 +34,6 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, r
     filename: "bundle.js",
     publicPath: '/', // 服务器脚本会用到
   },
-  devtool: '#source-map',
-
   module: {
     rules: [
       {

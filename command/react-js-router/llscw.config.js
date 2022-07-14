@@ -15,6 +15,8 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
         }
     },
 
+    favicon: '',
+
     // bundleAnalyzerOptions: {
     //   analyzerMode: 'static'
     // },
@@ -33,4 +35,4 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
   }
 }
 
-module.exports.llscwScaffold = 'llscw-react-js@0.0.1-beta21'
+module.exports.llscwScaffold = 'llscw-react-js@0.0.1-beta24'

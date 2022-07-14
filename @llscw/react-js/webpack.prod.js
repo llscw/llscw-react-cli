@@ -22,14 +22,16 @@ const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder
 const {
   bundleAnalyzerOptions,
   webpackConfig,
+  favicon
 } = customWebpackConfig
 
-const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "production" }), {
+const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, favicon }), {
+  mode: "production",
   entry: ["./index.jsx"],
   output: {
     path: path.resolve(userFolder, "dist"),
-    filename: "bundle.[chunkhash].js",
-    publicPath: '/dist', // 服务器脚本会用到
+    filename: "index.js",
+    publicPath: '/', // 服务器脚本会用到
   },
 
   module: {
@@ -88,7 +90,7 @@ webpack(finalWebpackConfig, (err, stats) => {
     }
   }
   if (stats.hasWarnings()) {
-    logUtil.warn(info.warnings)
+    // logUtil.warn(info.warnings)
     // console.warn(info.warnings);
   }
   logUtil.pass("Compilication done.")

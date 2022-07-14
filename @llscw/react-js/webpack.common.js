@@ -14,8 +14,7 @@ const path = require("path");
  * https://webpack.docschina.org/plugins/mini-css-extract-plugin/
  */
 
-module.exports = ({userFolder, buildFolder, currentEnv, mode})=>({
-    mode,
+module.exports = ({userFolder, buildFolder, currentEnv, favicon})=>({
     context: path.join(userFolder, "src"),
     resolve: {
         extensions: [".js", ".jsx"],
@@ -46,6 +45,7 @@ module.exports = ({userFolder, buildFolder, currentEnv, mode})=>({
             filename: "index.html", //Name of file in ./dist/
             template: "index.html", //Name of template in ./src
             hash: true,
+            favicon
         }),
         // new ESLintPlugin({
         //     fix: true, /* 自动帮助修复 */

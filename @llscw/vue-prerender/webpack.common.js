@@ -51,7 +51,6 @@ module.exports = ({userFolder, buildFolder, currentEnv, mode, replace})=>({
         'vue$': 'vue/dist/vue.esm.js'
       }
     },
-    devtool: '#eval-source-map',
     plugins: [
       new VueLoaderPlugin(),
       new HtmlWebpackPlugin({

@@ -16,9 +16,11 @@ const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder
 
 const {
   webpackConfig,
+  favicon
 } = customWebpackConfig
 
-const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, mode: "development" }), {
+const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, favicon }), {
+  mode: "development",
   entry: {
     shared: ['webpack-hot-middleware/client?hot=true&path=/__webpack_hmr&timeout=10000&reload=true'],
     home: {
@@ -65,7 +67,7 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, m
   plugins: [
     new webpack.HotModuleReplacementPlugin(),  // 启动HMR
     new webpack.NoEmitOnErrorsPlugin(), // 在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误。
-    new ClearConsole(),
+    // new ClearConsole(),
     // new ESLintPlugin({
     //     fix: true, /* 自动帮助修复 */
     //     extensions: ['js', 'json', 'tsx', 'ts'],
