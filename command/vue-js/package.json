@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "llscw run dev",
-    "prod": "llscw run prod"
+    "dev": "llscw run dev-prod",
+    "prod": "llscw run build-prod"
   },
   "keywords": [],
   "author": "",

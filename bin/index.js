@@ -7,6 +7,7 @@ const generate = require('../command/generator');
 const release = require('../command/release');
 const rollback = require('../command/rollback');
 const startProject = require('../command/start-project');
+const startProjectServer = require('../command/start-project-server');
 
 const pkg = require('../package.json')
 
@@ -52,7 +53,11 @@ program
   .option('-d, --debug', 'output extra debugging')
   .option('-c, --cur', 'clone in current dir')
   .action(function(env, cmd){
-    startProject(env);
+    if(env.indexOf('s:') !== -1) {
+      startProjectServer(env)
+    }else {
+      startProject(env);
+    }
   });
 
 program.parse(process.argv);

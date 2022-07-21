@@ -120,6 +120,10 @@ async function getTemplateName() {
           value: 'react-ts',
         },
         {
+          name: '页面(原生js)-react-ssr',
+          value: 'react-js-ssr',
+        },
+        {
           name: '页面(js)-vue',
           value: 'vue-js',
         }

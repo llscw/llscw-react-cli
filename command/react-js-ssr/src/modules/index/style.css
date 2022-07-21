@@ -1,0 +1,11 @@
+.hello-h2 {
+  font-size: 24px;
+  color: yellow;
+  font-weight: bolder;
+}
+
+.name-label {
+  font-size: 30px;
+  color: #999;
+  font-weight: bold;
+}

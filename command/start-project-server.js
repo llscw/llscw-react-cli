@@ -1,52 +1,60 @@
+/**
+ * 待处理：
+ * output目录 自动读取对应webpack设置
+ */
+
 const path = require('path');
 const fs = require('fs')
 const { Shell, getNpmPackageMessage, formatArgs } = require('../lib/utils');
-const { execSync } = require('child_process')
+const concurrently = require('concurrently');
 
 // node获取用户home目录 获取 桌面路径
-const USER_HOME = process.env.HOME || process.env.USERPROFILE
-const fse = require('fs-extra')
 const logUtil = require('../lib/util-log')
 
 const sh = new Shell()
 
 // 目标文件夹 根路径
 let targetRootPath = process.cwd();
-// 脚手架模版文件 路径
-let server_path = path.resolve(__dirname, '../server/server.js')
 
 function init() {
-  const customWebpackPath = path.resolve(targetRootPath, 'llscw.config.js')
+  const customWebpackPath = path.resolve(targetRootPath, 'llscw.ssr.config.js')
   const llscwScaffold = require(customWebpackPath).llscwScaffold
+  console.log(llscwScaffold,'???Xxxaaa')
   
   let llscwScaffoldName = getNpmPackageMessage(llscwScaffold).name
+  console.log(llscwScaffoldName,'???Xxxaaa---')
   
   // 本地调试 热更新
-  const start_path = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/server.js`)
-  // const start_path = path.resolve(USER_HOME, '.llscwScaffold/scaffold', `node_modules/${llscwScaffoldName}/server.js`)
-  // 本地打包
-  // const build_path = path.resolve(USER_HOME, '.llscwScaffold/scaffold', `node_modules/${llscwScaffoldName}`)
-  const build_path = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/webpack.prod.js`)
+  const start_path_csr = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/webpack.csr.dev.js`)
+  const start_path_ssr = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/webpack.ssr.dev.js`)
+
+  const build_path_csr = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/webpack.csr.prod.js`)
+  const build_path_ssr = path.resolve(targetRootPath, `node_modules/${llscwScaffoldName}/webpack.ssr.prod.js`)
   
   return {
     llscwScaffold,
-    start_path,
-    build_path
+    start_path_csr,
+    start_path_ssr,
+    build_path_csr,
+    build_path_ssr
   }
 }
 
 async function startProject(env) {
   const {
-    start_path,
-    build_path,
+    start_path_csr,
+    start_path_ssr,
+    build_path_csr,
+    build_path_ssr,
     llscwScaffold
   } = init()
 
   await scaffoldInit(llscwScaffold)
-  if(env === 'dev-prod') {
-    sh.exec(`node ${start_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
+  if(env === 's:dev-prod') {
+    const build = path.resolve(targetRootPath, '/dist')
+    sh.exec(`concurrently \"node ${start_path_csr} currentEnv=${env} userFolder=${targetRootPath}\" \"node ${start_path_ssr} currentEnv=${env} userFolder=${targetRootPath}\" \"npx serve -d ${build} -p 3059\"`, false)
   }else {
-    sh.exec(`node ${build_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
+    sh.exec(`node ${build_path_csr} currentEnv=${env} userFolder=${targetRootPath} && node ${build_path_ssr} currentEnv=${env} userFolder=${targetRootPath}`, false)
   }
   
 }
