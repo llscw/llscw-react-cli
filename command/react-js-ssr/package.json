@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "llscw run s:dev-prod",
+    "start": "nodemon dist/server.js",
     "prod": "llscw run s:build-prod"
   },
   "keywords": [],

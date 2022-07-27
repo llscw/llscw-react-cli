@@ -6,7 +6,6 @@
 const path = require('path');
 const fs = require('fs')
 const { Shell, getNpmPackageMessage, formatArgs } = require('../lib/utils');
-const concurrently = require('concurrently');
 
 // node获取用户home目录 获取 桌面路径
 const logUtil = require('../lib/util-log')
@@ -17,7 +16,7 @@ const sh = new Shell()
 let targetRootPath = process.cwd();
 
 function init() {
-  const customWebpackPath = path.resolve(targetRootPath, 'llscw.ssr.config.js')
+  const customWebpackPath = path.resolve(targetRootPath, 'llscw.config.js')
   const llscwScaffold = require(customWebpackPath).llscwScaffold
   console.log(llscwScaffold,'???Xxxaaa')
   
@@ -51,7 +50,8 @@ async function startProject(env) {
 
   await scaffoldInit(llscwScaffold)
   if(env === 's:dev-prod') {
-    const build = path.resolve(targetRootPath, '/dist')
+    const build = path.join(targetRootPath, '/dist')
+    console.log(path.resolve(targetRootPath, '/dist'),'=====',path.resolve(targetRootPath, 'dist'))
     sh.exec(`concurrently \"node ${start_path_csr} currentEnv=${env} userFolder=${targetRootPath}\" \"node ${start_path_ssr} currentEnv=${env} userFolder=${targetRootPath}\" \"npx serve -d ${build} -p 3059\"`, false)
   }else {
     sh.exec(`node ${build_path_csr} currentEnv=${env} userFolder=${targetRootPath} && node ${build_path_ssr} currentEnv=${env} userFolder=${targetRootPath}`, false)

@@ -14,8 +14,8 @@ const {
   currentEnv
 } = finalConfig
 
-const customWebpackPath = path.resolve(userFolder, 'llscw.ssr.config.js')
-const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder, currentEnv })
+const customWebpackPath = path.resolve(userFolder, 'llscw.config.js')
+const customWebpackConfig = require(customWebpackPath).ssr({ userFolder, buildFolder, currentEnv })
 
 const {
   webpackConfig,
@@ -32,10 +32,6 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig })
   },
   target: "node",
   externals: [nodeExternals()],
-  module: {
-    rules: [
-    ],
-  },
   plugins: [
   ]
 }, webpackConfig)

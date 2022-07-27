@@ -1,6 +1,25 @@
-const path = require("path");
+const webpack = require('webpack')
+const { merge } = require('webpack-merge')
+const path = require('path')
+const { isObjectLike } = require("./lib/util-type")
 
-module.exports = ({userFolder, buildFolder, currentEnv, favicon})=>({
+
+const { formatArgs } = require('./lib/utils')
+const finalConfig = formatArgs(process.argv)
+const {
+  userFolder,
+  buildFolder,
+  currentEnv
+} = finalConfig
+
+const customWebpackPath = path.resolve(userFolder, 'llscw.config.js')
+const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder, currentEnv })
+
+const {
+  webpackConfig,
+} = customWebpackConfig
+
+module.exports = ({userFolder, buildFolder, currentEnv, replace})=>(merge({
   context: path.join(userFolder, "src"),
   resolve: {
     extensions: [".js", ".jsx"],
@@ -8,7 +27,7 @@ module.exports = ({userFolder, buildFolder, currentEnv, favicon})=>({
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(le|c)ss$/,
         use: [
           'isomorphic-style-loader',
           {
@@ -18,6 +37,7 @@ module.exports = ({userFolder, buildFolder, currentEnv, favicon})=>({
               esModule: false,
             }
           },
+          'less-loader',
           'postcss-loader'
         ]
       },
@@ -29,6 +49,13 @@ module.exports = ({userFolder, buildFolder, currentEnv, favicon})=>({
             cacheDirectory: true,
         },
       },
+      isObjectLike(replace) ?
+      {
+        test: /\.[(js)(vue)(vuex)]*$/,
+        enforce: "pre",
+        loader: require('./lib/util-get-replace-loader')(replace, currentEnv),
+        exclude: /node_modules/,
+      } : {}
     ],
   } 
-})
+}, webpackConfig))

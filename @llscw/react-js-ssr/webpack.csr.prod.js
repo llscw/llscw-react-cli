@@ -13,24 +13,21 @@ const {
   currentEnv
 } = finalConfig
 
-const customWebpackPath = path.resolve(userFolder, 'llscw.csr.config.js')
-const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder, currentEnv })
+const customWebpackPath = path.resolve(userFolder, 'llscw.config.js')
+const customWebpackConfig = require(customWebpackPath).csr({ userFolder, buildFolder, currentEnv })
 
 const {
   webpackConfig,
+  replace
 } = customWebpackConfig
 
-const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig }), {
+const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig, replace }), {
   mode: "production",
   entry: ['./client/index.jsx'],
   output: {
     path: path.resolve(rootPath, "dist"),
     filename: "client.js",
     publicPath: '/', // 服务器脚本会用到
-  },
-  module: {
-    rules: [
-    ],
   },
   plugins: []
 }, webpackConfig)

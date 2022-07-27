@@ -14,11 +14,12 @@ const {
   currentEnv
 } = finalConfig
 
-const customWebpackPath = path.resolve(userFolder, 'llscw.ssr.config.js')
-const customWebpackConfig = require(customWebpackPath)({ userFolder, buildFolder, currentEnv })
+const customWebpackPath = path.resolve(userFolder, 'llscw.config.js')
+const customWebpackConfig = require(customWebpackPath).ssr({ userFolder, buildFolder, currentEnv })
 
 const {
   webpackConfig,
+  replace
 } = customWebpackConfig
 
 const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig }), {
@@ -32,47 +33,40 @@ const finalWebpackConfig = merge(require("./webpack.common")({ ...finalConfig })
   },
   target: "node",
   externals: [nodeExternals()],
-  module: {
-    rules: [
-    ],
-  },
   plugins: [
   ]
 }, webpackConfig)
 
 // module.exports = webpackConfig
 gulpFunc(() =>
-webpack(finalWebpackConfig, (err, stats) => {
-  if (err) {
-    console.error("Compilication failed.")
-    console.error(err.stack || err);
-    if (err.details) {
-      console.error(err.details);
-    }
-    process.exit(1);
-    return;
-  }
-  const info = stats.toJson();
-  if (stats.hasErrors()) {
-    let hasBuildError = false;
-
-    // 只要有一个不是来自 uglify 的问题
-    for (let i = 0, len = info.errors.length; i < len; i++) {
-      if (!/from\s*UglifyJs/i.test(info.errors[i])) {
-        hasBuildError = true;
-        break;
+  webpack(finalWebpackConfig,(err, stats)=>{
+    if (err) {
+      console.error("Compilication failed.")
+      console.error(err.stack || err);
+      if (err.details) {
+        console.error(err.details);
       }
     }
-    if (hasBuildError) {
-      // logUtil.error("Compilication failed.")
-      console.log(info.errors);
-
-      process.exit(1);
+    const info = stats.toJson();
+    if (stats.hasErrors()) {
+      let hasBuildError = false;
+  
+      // 只要有一个不是来自 uglify 的问题
+      for (let i = 0, len = info.errors.length; i < len; i++) {
+        if (!/from\s*UglifyJs/i.test(info.errors[i])) {
+          hasBuildError = true;
+          break;
+        }
+      }
+      if (hasBuildError) {
+        // logUtil.error("Compilication failed.")
+        console.log(info.errors);
+  
+      }
     }
-  }
-  if (stats.hasWarnings()) {
-    // logUtil.warn(info.warnings)
-    console.warn(info.warnings);
-  }
-})
+    if (stats.hasWarnings()) {
+      // logUtil.warn(info.warnings)
+      console.warn(info.warnings);
+    }
+  })
 )
