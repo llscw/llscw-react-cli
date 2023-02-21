@@ -1,0 +1,19 @@
+{
+  "name": "vue-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "llscw run dev-prod",
+    "prod": "llscw run build-prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2"
+  }
+}

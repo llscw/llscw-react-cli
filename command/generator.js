@@ -126,6 +126,10 @@ async function getTemplateName() {
         {
           name: '页面(js)-vue',
           value: 'vue-js',
+        },
+        {
+          name: '页面(js)-vue3',
+          value: 'vue3-js'
         }
       ]
     },

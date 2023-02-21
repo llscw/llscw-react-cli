@@ -49,7 +49,12 @@ router.get('/client.js', ctx=>{
 
 })
 
-app.use(router.routes())
+// app.use(router.routes())
+
+app.use((ctx)=>{
+  ctx.body = getHtmlData(ctx)
+})
+
 app.listen(3000, () => {
   console.log('[0] localhost:3000');
 });
