@@ -16,5 +16,5 @@ module.exports = (callback) => {
   }
   
   // 或者关联一个任务组合
-  watch(path.join(rootPath, 'src/**'), { queue: true, ignoreInitial: false }, series(clean, javascript));
+  watch('src/**', { queue: true, ignoreInitial: false, cwd: rootPath }, series(clean, javascript));
 }

@@ -1,6 +1,6 @@
 {
   "name": "llscw-react-js-ssr",
-  "version": "0.0.1-beta11",
+  "version": "0.0.1-beta12",
   "description": "react脚手架webpack配置",
   "main": "index.js",
   "author": "luoqintai",

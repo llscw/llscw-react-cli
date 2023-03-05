@@ -64,4 +64,4 @@ module.exports.csr = ({ userFolder, srcFolder, buildFolder, gitVersion, currentE
   }
 }
 
-module.exports.llscwScaffold = 'llscw-react-js-ssr@0.0.1-beta5'
+module.exports.llscwScaffold = 'llscw-react-js-ssr@0.0.1-beta12'

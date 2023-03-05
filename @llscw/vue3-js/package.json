@@ -1,6 +1,6 @@
 {
   "name": "llscw-vue3-js",
-  "version": "0.0.1-beta5",
+  "version": "0.0.1-beta6",
   "description": "vue3脚手架webpack配置",
   "main": "index.js",
   "directories": {

@@ -48,10 +48,13 @@ async function startProject(env) {
     llscwScaffold
   } = init()
   await scaffoldInit(llscwScaffold)
+  console.log('测试数据-----')
   if(env === 'dev-prod') {
-    sh.exec(`node ${start_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
+  console.log('测试数据-----222', '"'+start_path+'"', targetRootPath)
+  sh.exec(`node ${start_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
   }else {
-    sh.exec(`node ${build_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
+  console.log('测试数据-----111')
+  sh.exec(`node ${build_path} currentEnv=${env} userFolder=${targetRootPath}`, false)
   }
   
 }
