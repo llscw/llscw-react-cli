@@ -44,4 +44,4 @@ module.exports = ({ userFolder, srcFolder, buildFolder, gitVersion, currentEnv, 
   }
 }
 
-module.exports.llscwScaffold = 'llscw-vue3-js@0.0.1-beta6'
+module.exports.llscwScaffold = 'llscw-vue3-js@0.0.1-beta7'
